@@ -1,0 +1,63 @@
+@startuml
+
+!define SPRITESURL https://raw.githubusercontent.com/kuuurt77/plantuml-sprites/v2.1
+!define SPRITESHEET ${SPRITESURL}/sprites.puml
+
+!includeurl ${SPRITESHEET}
+
+!define ICONURL https://raw.githubusercontent.com/kuuurt77/plantuml-icon-font-sprites/v2.1
+!define ICONSHEETS $ICONURL/iconfont
+
+!includeurl $ICONSHEETS/common.puml
+!includeurl $ICONSHEETS/font-awesome-5/user.puml
+!includeurl $ICONSHEETS/font-awesome-5/car.puml
+
+!define ICON_SIZE 16
+
+!define USER_SPRITE $SPRITESURL/user/user-sprite.puml
+!define CAR_SPRITE $SPRITESURL/vehicle/car.puml
+
+!define SPRITE(user_alias, user_sprite) sprite(user_alias) $USER_SPRITE with .name = user_sprite
+!define SPRITE(car_alias, car_sprite) sprite(car_alias) $CAR_SPRITE with .name = car_sprite
+
+!define FOOTER_COLOR #B0C4DE
+
+!define SYSTEM_BORDER_COLOR #000000
+!define SYSTEM_FONT_COLOR #000000
+
+!define SPRITE_PADDING 10
+
+skinparam rectangle {
+    Shadowing = true
+}
+
+skinparam system {
+    BorderColor <<SYSTEM_BORDER_COLOR>>
+    FontColor <<SYSTEM_FONT_COLOR>>
+}
+
+skinparam footer {
+    BorderColor <<SYSTEM_BORDER_COLOR>>
+    BackgroundColor <<FOOTER_COLOR>>
+}
+
+package "Carpool Service App" {
+    [User] as user <<(U,USER_SPRITE)>>
+    [Mobile App] as mobileapp <<(U,USER_SPRITE)>>
+    [Web App] as webapp <<(U,USER_SPRITE)>>
+    
+    [Carpool Service] as carpoolservice
+    [Car] as car <<(V,CAR_SPRITE)>>
+    [Driver] as driver
+    
+    user --> mobileapp: Uses
+    user --> webapp: Uses
+    mobileapp --> carpoolservice: Requests
+    webapp --> carpoolservice: Requests
+    carpoolservice --> car: Manages
+    carpoolservice --> driver: Manages
+    
+    note right of carpoolservice: Business Logic
+}
+
+@enduml
