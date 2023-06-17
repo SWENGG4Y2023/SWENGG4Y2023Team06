@@ -1,92 +1,41 @@
 @startuml
+object "CustomerApp" as CA
+object "QuickRideApp" as QRA
+object "LocationAndMapping" as LM
+object "PaymentGateway" as PG
+object "NotificationService" as NS
+object "PaymentProcessor" as PP
+object "EmailService" as ES
 
-!define SPRITESURL https://raw.githubusercontent.com/kuuurt77/plantuml-sprites/v2.1
-!define SPRITESHEET ${SPRITESURL}/sprites.puml
+CA : UserName
+CA : Password
+CA : Booking History
+CA : Addreess
+QRA : Renting Car
+QRA : Tracking Cars
+QRA : Available Cars
+LM : Latitude
+LM : Longitude
+LM : Source
+LM : Destination
+PG : Online Mode
+PG : Cash Mode
+NS : Booking Confirmation
+NS : Status
+PP : Payment Status
+PP : Refund Status
+ES : Subscribers
+ES : Reviews
 
-!includeurl ${SPRITESHEET}
 
-!define ICONURL https://raw.githubusercontent.com/kuuurt77/plantuml-icon-font-sprites/v2.1
-!define ICONSHEETS $ICONURL/iconfont
-
-!includeurl $ICONSHEETS/common.puml
-!includeurl $ICONSHEETS/font-awesome-5/user.puml
-!includeurl $ICONSHEETS/font-awesome-5/car.puml
-!includeurl $ICONSHEETS/font-awesome-5/cloud.puml
-!includeurl $ICONSHEETS/font-awesome-5/server.puml
-
-!define ICON_SIZE 16
-
-!define USER_SPRITE $SPRITESURL/user/user-sprite.puml
-!define CAR_SPRITE $SPRITESURL/vehicle/car.puml
-!define SERVER_SPRITE $SPRITESURL/cloud/server.puml
-
-!define SPRITE(user_alias, user_sprite) sprite(user_alias) $USER_SPRITE with .name = user_sprite
-!define SPRITE(car_alias, car_sprite) sprite(car_alias) $CAR_SPRITE with .name = car_sprite
-!define SPRITE(server_alias, server_sprite) sprite(server_alias) $SERVER_SPRITE with .name = server_sprite
-
-!define FOOTER_COLOR #B0C4DE
-
-!define CONTAINER_BACKGROUND_COLOR #D8D8D8
-!define COMPONENT_BACKGROUND_COLOR #EFEFEF
-!define DATABASE_BACKGROUND_COLOR #F0FFFF
-
-!define CONTAINER_BORDER_COLOR #000000
-!define COMPONENT_BORDER_COLOR #000000
-!define DATABASE_BORDER_COLOR #000000
-
-!define CONTAINER_FONT_COLOR #000000
-!define COMPONENT_FONT_COLOR #000000
-!define DATABASE_FONT_COLOR #000000
-
-!define SPRITE_PADDING 10
-
-skinparam rectangle {
-    Shadowing = true
-}
-
-skinparam component {
-    BorderColor <<COMPONENT_BORDER_COLOR>>
-    BackgroundColor <<COMPONENT_BACKGROUND_COLOR>>
-    FontColor <<COMPONENT_FONT_COLOR>>
-}
-
-skinparam database {
-    BorderColor <<DATABASE_BORDER_COLOR>>
-    BackgroundColor <<DATABASE_BACKGROUND_COLOR>>
-    FontColor <<DATABASE_FONT_COLOR>>
-}
-
-skinparam container {
-    BorderColor <<CONTAINER_BORDER_COLOR>>
-    BackgroundColor <<CONTAINER_BACKGROUND_COLOR>>
-    FontColor <<CONTAINER_FONT_COLOR>>
-}
-
-package "Carpool Service App" {
-    frame "User Interface" as UI {
-        [Mobile App] as mobileapp <<(U,USER_SPRITE)>>
-        [Web App] as webapp <<(U,USER_SPRITE)>>
-    }
-    
-    frame "Application Server" as ApplicationServer {
-        [Carpool Service] as carpoolservice <<(S,SERVER_SPRITE)>>
-        [Authentication Service] as authservice <<(S,SERVER_SPRITE)>>
-    }
-    
-    frame "Database" as Database {
-        [User Database] as userdb <<(D,server_sprite)>>
-        [Ride Database] as ridedb <<(D,server_sprite)>>
-    }
-    
-    UI --> carpoolservice: Requests
-    UI --> authservice: Authentication
-    
-    carpoolservice --> userdb: Accesses
-    carpoolservice --> ridedb: Accesses
-    
-    carpoolservice --> authservice: Authenticates
-    
-    note right of carpoolservice: Business Logic
-}
-
+NS <|-- CA
+PG <|-- CA
+NS <|-- QRA
+CA <|-- QRA
+CA <|-- LM
+QRA <|-- LM
+PP <|-- PG
+ES <|-- NS
+CA <|-- NS
+LM <|-- NS
 @enduml
